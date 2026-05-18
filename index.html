@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карты музеев Москвы</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="static/style.css">
+    <style>
+        #map {
+            height: 500px;
+        }
+        .info {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="info" class="info"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        var mymap = L.map('map').setView([55.7558, 37.6173], 12);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+        }).addTo(mymap);
+
+        fetch('/museums')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(museum => {
+                    var marker = L.marker(museum.location).addTo(mymap);
+                    marker.bindPopup(`<b>museum.name</b><br>{museum.name}</b><br>museum.name</b><br>{museum.hours}<br>museum.price<br><ahref="{museum.price}<br><a href="museum.price<br><ahref="{museum.website}" target="_blank">Официальный сайт</a>`);
+                    marker.on('click', function() {
+                        document.getElementById('info').innerHTML = `<b>museum.name</b><br>{museum.name}</b><br>museum.name</b><br>{museum.hours}<br>museum.price<br><ahref="{museum.price}<br><a href="museum.price<br><ahref="{museum.website}" target="_blank">Официальный сайт</a>`;
+                    });
+                });
+            });
+    </script>
+</body>
+</html>
